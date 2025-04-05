@@ -1,0 +1,63 @@
+import streamlit as st
+import datetime
+
+# Page settings
+st.set_page_config(page_title="Dhermi Boat Tours", page_icon="⛵", layout="centered")
+
+# App title
+st.title("⛵ Dhermi Boat Tours - Booking Form")
+st.markdown("Book your dream boat tour in Dhermi, Albania 🌊")
+
+# Booking form
+with st.form("booking_form"):
+    st.subheader("Fill out your booking details:")
+    
+    name = st.text_input("Full Name *")
+    email = st.text_input("Email Address *")
+    
+    destination = st.selectbox(
+        "Choose Destination *", 
+        ["Gjipe Beach", "Grama Bay", "Blue Cave", "Pirate Cave", "Karaburun"]
+    )
+    
+    tour_type = st.selectbox(
+        "Select Tour Type *", 
+        ["Private Tour", "Shared Tour", "Sunset Tour", "Snorkeling Tour"]
+    )
+    
+    date = st.date_input(
+        "Preferred Date *", 
+        min_value=datetime.date.today(), 
+        max_value=datetime.date.today() + datetime.timedelta(days=90)
+    )
+    
+    time = st.selectbox(
+        "Preferred Time *", 
+        ["09:00", "11:00", "13:00", "15:00", "17:00"]
+    )
+    
+    passengers = st.number_input("Number of Passengers *", min_value=1, max_value=10, step=1)
+    
+    notes = st.text_area("Any special requests or notes?", placeholder="Optional")
+
+    submitted = st.form_submit_button("📩 Submit Booking")
+
+# Confirmation
+if submitted:
+    if not name or not email or "@" not in email:
+        st.error("❌ Please fill in all required fields and enter a valid email.")
+    else:
+        st.success("✅ Booking Confirmed! Thank you for booking with Dhermi Boat Tours.")
+        st.markdown("---")
+        st.subheader("🔎 Booking Summary:")
+        st.write("**Name:**", name)
+        st.write("**Email:**", email)
+        st.write("**Destination:**", destination)
+        st.write("**Tour Type:**", tour_type)
+        st.write("**Date:**", date.strftime("%A, %d %B %Y"))
+        st.write("**Time:**", time)
+        st.write("**Passengers:**", int(passengers))
+        if notes:
+            st.write("**Notes:**", notes)
+        st.markdown("---")
+        st.balloons()
